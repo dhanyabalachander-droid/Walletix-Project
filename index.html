@@ -1,0 +1,5038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WALLETIX</title>
+
+<style>
+:root{
+  --bg:#070912;
+  --card:rgba(255,255,255,.055);
+  --bd:rgba(255,255,255,.1);
+  --tx:#eaeefc;
+  --mu:#8b93b5;
+  --a:#8b6cff;
+  --b:#22d3ee;
+  --g:#34d399;
+  --r:#fb7185;
+  --y:#fbbf24;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+}
+
+html,body{
+  height:100%;
+}
+
+body{
+  background:var(--bg);
+  color:var(--tx);
+  font:15px/1.5 "Segoe UI",system-ui,sans-serif;
+  overflow-x:hidden;
+}
+
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:
+    radial-gradient(
+      60% 50% at 15% 10%,
+      rgba(139,108,255,.25),
+      transparent
+    ),
+    radial-gradient(
+      50% 45% at 90% 85%,
+      rgba(34,211,238,.18),
+      transparent
+    );
+  animation:amb 14s ease-in-out infinite alternate;
+}
+
+@keyframes amb{
+  to{
+    filter:hue-rotate(35deg) brightness(1.15);
+  }
+}
+
+#app{
+  display:flex;
+  min-height:100%;
+}
+
+aside{
+  width:230px;
+  flex:none;
+  padding:18px 12px;
+  border-right:1px solid var(--bd);
+  background:rgba(8,10,22,.7);
+  backdrop-filter:blur(18px);
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow:auto;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:.5px;
+  padding:4px 10px 16px;
+  background:linear-gradient(90deg,var(--a),var(--b));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+aside a{
+  display:block;
+  padding:9px 12px;
+  border-radius:10px;
+  color:var(--mu);
+  cursor:pointer;
+  transition:.2s;
+  margin-bottom:2px;
+}
+
+aside a:hover{
+  background:var(--card);
+  color:var(--tx);
+}
+
+aside a.on{
+  background:
+    linear-gradient(
+      90deg,
+      rgba(139,108,255,.3),
+      rgba(34,211,238,.12)
+    );
+  color:#fff;
+  box-shadow:inset 2px 0 var(--a);
+}
+
+main{
+  flex:1;
+  min-width:0;
+  padding:26px;
+  max-width:1200px;
+  margin:auto;
+}
+
+h1{
+  font-size:26px;
+  margin-bottom:4px;
+}
+
+h2{
+  font-size:16px;
+  margin-bottom:12px;
+}
+
+.sub{
+  color:var(--mu);
+  margin-bottom:18px;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+#menu{
+  display:none;
+}
+
+.grid{
+  display:grid;
+  gap:14px;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  margin-bottom:14px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--bd);
+  border-radius:16px;
+  padding:18px;
+  backdrop-filter:blur(14px);
+  transition:.25s;
+  animation:in .5s both;
+}
+
+.card:hover{
+  border-color:rgba(139,108,255,.5);
+  box-shadow:0 0 28px rgba(139,108,255,.15);
+}
+
+@keyframes in{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+}
+
+.big{
+  font-size:28px;
+  font-weight:700;
+}
+
+.mu{
+  color:var(--mu);
+  font-size:13px;
+}
+
+.pos{
+  color:var(--g);
+}
+
+.neg{
+  color:var(--r);
+}
+
+label{
+  display:block;
+  font-size:12px;
+  color:var(--mu);
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  margin-top:4px;
+  padding:9px 11px;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--bd);
+  border-radius:10px;
+  color:var(--tx);
+  font:inherit;
+  outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:var(--a);
+  box-shadow:0 0 0 3px rgba(139,108,255,.2);
+}
+
+input[type=checkbox]{
+  width:auto;
+}
+
+option{
+  background:#12152a;
+}
+
+.fg{
+  display:grid;
+  gap:10px;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  margin-bottom:12px;
+}
+
+button{
+  padding:9px 16px;
+  border:0;
+  border-radius:10px;
+  background:linear-gradient(90deg,var(--a),#5b8cff);
+  color:#fff;
+  font:inherit;
+  font-weight:600;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 20px rgba(139,108,255,.4);
+}
+
+button.s{
+  background:var(--card);
+  border:1px solid var(--bd);
+  padding:5px 10px;
+  font-size:12px;
+  font-weight:500;
+}
+
+button.d{
+  background:rgba(251,113,133,.18);
+  color:var(--r);
+}
+
+.tw{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:560px;
+}
+
+th,
+td{
+  text-align:left;
+  padding:9px 8px;
+  border-bottom:1px solid var(--bd);
+  font-size:14px;
+}
+
+th{
+  color:var(--mu);
+  font-weight:500;
+  font-size:12px;
+}
+
+.pb{
+  height:8px;
+  background:rgba(255,255,255,.08);
+  border-radius:9px;
+  overflow:hidden;
+  margin:6px 0;
+}
+
+.pb i{
+  display:block;
+  height:100%;
+  border-radius:9px;
+  background:linear-gradient(90deg,var(--a),var(--b));
+  animation:gw 1s both;
+}
+
+@keyframes gw{
+  from{
+    width:0;
+  }
+}
+
+.pill{
+  padding:2px 9px;
+  border-radius:20px;
+  font-size:12px;
+  background:var(--card);
+}
+
+.Paid{
+  color:var(--g);
+}
+
+.Overdue{
+  color:var(--r);
+}
+
+.Due{
+  color:var(--y);
+}
+
+.empty{
+  text-align:center;
+  color:var(--mu);
+  padding:26px 10px;
+}
+
+.hero{
+  text-align:center;
+  padding:9vh 10px;
+}
+
+.hero h1{
+  font-size:clamp(32px,6vw,56px);
+  background:linear-gradient(90deg,var(--a),var(--b));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.hero p{
+  margin:12px 0 24px;
+  color:var(--mu);
+}
+
+.hero button{
+  font-size:17px;
+  padding:13px 28px;
+}
+
+.chart{
+  display:flex;
+  gap:16px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.chart svg{
+  width:150px;
+  flex:none;
+}
+
+.leg div{
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.leg i{
+  width:10px;
+  height:10px;
+  border-radius:3px;
+  display:inline-block;
+}
+
+.bars{
+  display:flex;
+  align-items:flex-end;
+  gap:14px;
+  height:150px;
+  overflow-x:auto;
+  padding-top:8px;
+}
+
+.bg2{
+  display:flex;
+  align-items:flex-end;
+  gap:3px;
+  height:120px;
+}
+
+.bar{
+  width:20px;
+  border-radius:5px 5px 0 0;
+  transform-origin:bottom;
+  animation:gh .9s both;
+}
+
+.bl{
+  font-size:11px;
+  color:var(--mu);
+  text-align:center;
+  margin-top:4px;
+}
+
+@keyframes gh{
+  from{
+    transform:scaleY(0);
+  }
+}
+
+#chat{
+  height:340px;
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.m{
+  padding:9px 13px;
+  border-radius:14px;
+  max-width:85%;
+  white-space:pre-wrap;
+}
+
+.m.u{
+  align-self:flex-end;
+  background:linear-gradient(90deg,var(--a),#5b8cff);
+}
+
+.m.a{
+  background:var(--card);
+  border:1px solid var(--bd);
+}
+
+.row{
+  display:flex;
+  gap:8px;
+}
+
+.row input{
+  flex:1;
+}
+
+#toast{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  z-index:9;
+}
+
+#toast div{
+  padding:11px 16px;
+  border-radius:12px;
+  background:#141833;
+  border:1px solid var(--a);
+  animation:in .3s;
+}
+
+#toast .e{
+  border-color:var(--r);
+}
+
+.backend-status{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:5px 10px;
+  border-radius:20px;
+  background:rgba(255,255,255,.05);
+  font-size:12px;
+  color:var(--mu);
+}
+
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--y);
+}
+
+.status-dot.ok{
+  background:var(--g);
+}
+
+.status-dot.error{
+  background:var(--r);
+}
+
+@media(max-width:800px){
+
+  aside{
+    position:fixed;
+    z-index:8;
+    left:-240px;
+    transition:.3s;
+    width:230px;
+  }
+
+  aside.open{
+    left:0;
+  }
+
+  #menu{
+    display:block;
+  }
+
+  main{
+    padding:16px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+
+  *{
+    animation:none!important;
+    transition:none!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div id="app">
+  <aside id="nav"></aside>
+  <main id="main"></main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+/* =========================================================
+   WALLETIX
+   Complete frontend
+   Backend: http://localhost:5000
+   ========================================================= */
+
+const KEY = "walletix_v1";
+const API = "http://localhost:5000";
+
+const $ = id => document.getElementById(id);
+
+const g = id => {
+  const el = $(id);
+  return el ? el.value : "";
+};
+
+const LN = {
+  en:0,
+  ta:1,
+  tg:2
+};
+
+let S = {};
+
+try{
+  S = JSON.parse(localStorage.getItem(KEY)) || {};
+}catch(e){
+  S = {};
+}
+
+S = Object.assign({
+  profile:null,
+  tx:[],
+  bills:[],
+  debts:[],
+  goals:[],
+  ef:{
+    target:0,
+    current:0,
+    monthly:0
+  },
+  lang:"en",
+  savePct:20,
+  month:""
+},S);
+
+let backendOnline = false;
+
+const save = () => {
+  try{
+    localStorage.setItem(KEY,JSON.stringify(S));
+  }catch(e){
+    toast("Could not save browser data.",true);
+  }
+};
+
+const uid = () =>
+  Date.now().toString(36) +
+  Math.random().toString(36).slice(2,8);
+
+const esc = s =>
+  String(s ?? "").replace(
+    /[&<>"']/g,
+    c => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[c])
+  );
+
+const fmt = v =>
+  "₹" + Math.round(Number(v)||0).toLocaleString("en-IN");
+
+const sum = (a,f) =>
+  a.reduce((s,x) => s + (f ? Number(f(x)||0) : Number(x||0)),0);
+
+const today = () =>
+  new Date().toISOString().slice(0,10);
+
+function toast(message,error=false){
+
+  const d = document.createElement("div");
+
+  d.textContent = message;
+
+  if(error){
+    d.className = "e";
+  }
+
+  $("toast").appendChild(d);
+
+  setTimeout(()=>{
+    d.remove();
+  },3500);
+}
+
+const D = {
+
+  nav:[
+    ["Dashboard","டாஷ்போர்டு","Dashboard"],
+    ["Financial Setup","நிதி அமைப்பு","Financial Setup"],
+    ["Budget Planner","பட்ஜெட்","Budget Planner"],
+    ["Transactions","பரிவர்த்தனைகள்","Transactions"],
+    ["Grocery Planner","மளிகை திட்டம்","Grocery Planner"],
+    ["Bills","கட்டணங்கள்","Bills"],
+    ["Savings","சேமிப்பு","Savings"],
+    ["Emergency Fund","அவசர நிதி","Emergency Fund"],
+    ["Debt & EMI","கடன் & EMI","Debt & EMI"],
+    ["Financial Goals","இலக்குகள்","Financial Goals"],
+    ["Spending Insights","செலவு நுண்ணறிவு","Spending Insights"],
+    ["AI Assistant","AI உதவியாளர்","AI Assistant"],
+    ["Settings","அமைப்புகள்","Settings"]
+  ],
+
+  wt:[
+    "Welcome to WALLETIX",
+    "WALLETIX-க்கு வரவேற்கிறோம்",
+    "WALLETIX-ku Welcome"
+  ],
+
+  ws:[
+    "Let's understand your financial situation and create a personalized plan.",
+    "உங்கள் நிதி நிலையை புரிந்து தனிப்பட்ட திட்டத்தை உருவாக்குவோம்.",
+    "Unga financial nilamaiya purinjukittu personal plan create pannuvom."
+  ],
+
+  st:[
+    "Start Financial Setup",
+    "நிதி அமைப்பைத் தொடங்கு",
+    "Financial Setup Aarambikkalam"
+  ],
+
+  need:[
+    "Add your income and expenses to calculate your savings potential.",
+    "சேமிப்பு திறனை கணக்கிட வருமானம் மற்றும் செலவுகளை சேர்க்கவும்.",
+    "Savings potential kanakkida income & expenses add pannunga."
+  ],
+
+  top:[
+    "Highest spending: {0} ({1}, {2}% of expenses).",
+    "அதிக செலவு: {0} ({1}, செலவில் {2}%).",
+    "Adhiga selavu: {0} ({1}, selavil {2}%)."
+  ],
+
+  rise:[
+    "{0} spending rose {1}% versus last month.",
+    "{0} செலவு கடந்த மாதத்தை விட {1}% உயர்ந்தது.",
+    "{0} selavu kadantha madhathai vida {1}% adhigam."
+  ],
+
+  small:[
+    "{0} small purchases (under {1}) add up to {2}.",
+    "{1}-க்கு கீழ் {0} சிறு வாங்குதல்கள் மொத்தம் {2}.",
+    "{1}-ku keezh {0} sinna purchases motham {2}."
+  ],
+
+  ess:[
+    "Essentials are {0}% of spending, non-essentials {1}%.",
+    "அவசிய செலவு {0}%, அவசியமற்றவை {1}%.",
+    "Essential {0}%, non-essential {1}% selavu."
+  ],
+
+  noins:[
+    "Add more transactions to generate spending insights.",
+    "செலவு நுண்ணறிவுகளுக்கு மேலும் பரிவர்த்தனைகளை சேர்க்கவும்.",
+    "Insights kidaikka innum transactions add pannunga."
+  ],
+
+  a1:[
+    "This month: income {0}, expenses {1}, balance {2}.",
+    "இந்த மாதம்: வருமானம் {0}, செலவு {1}, மீதம் {2}.",
+    "Indha madham: income {0}, selavu {1}, meedhi {2}."
+  ],
+
+  a2:[
+    "Trimming {0} by 10% would free about {1} a month.",
+    "{0} செலவை 10% குறைத்தால் மாதம் சுமார் {1} மிச்சம்.",
+    "{0} selavai 10% kuraichaa maadham {1} micham."
+  ],
+
+  a3:[
+    "Debt outstanding {0}; EMIs {1}/month = {2}% of income.",
+    "நிலுவை கடன் {0}; EMI {1}/மாதம் = வருமானத்தில் {2}%.",
+    "Kadan {0}; EMI {1}/maadham = income-il {2}%."
+  ],
+
+  a4:[
+    "{0}: save {1}/month to reach it by {2}.",
+    "{0}: {2}-க்குள் அடைய மாதம் {1} சேமிக்கவும்.",
+    "{0}: {2}-kulla adaiya maadham {1} semikkanum."
+  ],
+
+  a5:[
+    "Unpaid bills: {0}, totalling {1}.",
+    "செலுத்தாத கட்டணங்கள்: {0}, மொத்தம் {1}.",
+    "Pay pannaadha bills: {0}, motham {1}."
+  ],
+
+  a6:[
+    "Ask me about saving, spending, bills, debt, goals or budget.",
+    "சேமிப்பு, செலவு, கட்டணம், கடன், இலக்கு, பட்ஜெட் பற்றி கேளுங்கள்.",
+    "Saving, selavu, bills, kadan, goals, budget pathi kelunga."
+  ],
+
+  a7:[
+    "Not enough data yet. Please add: {0}.",
+    "இன்னும் போதுமான தரவு இல்லை. சேர்க்கவும்: {0}.",
+    "Data pathaadhu. Add pannunga: {0}."
+  ]
+};
+
+const L = (k,...args) => {
+
+  const text = D[k][LN[S.lang]] || D[k][0];
+
+  return text.replace(
+    /\{(\d+)\}/g,
+    (_,i) => args[Number(i)] ?? ""
+  );
+};
+
+const ESS = new Set([
+  "Rent",
+  "Groceries",
+  "Utilities",
+  "Transport",
+  "Education",
+  "Insurance",
+  "Health",
+  "EMI",
+  "Bills"
+]);
+
+const CATS = [
+  "Salary",
+  "Business",
+  "Other Income",
+  "Rent",
+  "Groceries",
+  "Utilities",
+  "Transport",
+  "Education",
+  "Insurance",
+  "Health",
+  "EMI",
+  "Bills",
+  "Food Delivery",
+  "Shopping",
+  "Entertainment",
+  "Travel",
+  "Subscriptions",
+  "Personal",
+  "Other"
+];
+
+
+/* =========================================================
+   CALCULATION ENGINE
+   ========================================================= */
+
+const C = {
+
+  month:() =>
+    S.month || today().slice(0,7),
+
+  txM:() =>
+    S.tx.filter(
+      x => String(x.date || "").slice(0,7) === C.month()
+    ),
+
+  exp:() =>
+    C.txM().filter(x => x.type === "expense"),
+
+  totalIncome:() =>
+    sum(
+      C.txM().filter(x => x.type === "income"),
+      x => x.amount
+    ),
+
+  totalExpenses:() =>
+    sum(C.exp(),x => x.amount),
+
+  balance:() =>
+    C.totalIncome() - C.totalExpenses(),
+
+  planIncome:() =>
+    S.profile
+      ? Number(S.profile.income||0) +
+        Number(S.profile.other||0)
+      : 0,
+
+  fixed:() =>
+    S.profile
+      ? sum(
+          [
+            "rent",
+            "elec",
+            "net",
+            "mobile",
+            "edu",
+            "ins",
+            "transport"
+          ],
+          k => S.profile[k]
+        )
+      : 0,
+
+  totalEmi:() =>
+    sum(S.debts,d => d.emi),
+
+  debtTotal:() =>
+    sum(S.debts,d => d.out),
+
+  categoryExpenses:(list=C.exp()) =>
+    list.reduce(
+      (o,x)=>{
+        o[x.cat] = (o[x.cat]||0) + Number(x.amount||0);
+        return o;
+      },
+      {}
+    ),
+
+  essential:() =>
+    sum(
+      C.exp().filter(x => x.ess),
+      x => x.amount
+    ),
+
+  nonEssential:() =>
+    C.totalExpenses() - C.essential(),
+
+  savings:() =>
+    S.profile
+      ? Number(S.profile.savings||0)
+      : 0,
+
+  savingsPotential:() =>
+    Math.max(C.balance(),0),
+
+  efProgress:() =>
+    S.ef.target > 0
+      ? Math.min(
+          S.ef.current / S.ef.target * 100,
+          100
+        )
+      : null,
+
+  goalProgress(x){
+
+    const rem = Math.max(
+      Number(x.target||0) -
+      Number(x.cur||0),
+      0
+    );
+
+    const pct =
+      Number(x.target||0) > 0
+        ? Math.min(
+            Number(x.cur||0) /
+            Number(x.target) * 100,
+            100
+          )
+        : 0;
+
+    let m = null;
+    let mo = null;
+
+    if(x.date){
+
+      const t = new Date(x.date);
+      const n = new Date();
+
+      mo =
+        (t.getFullYear()-n.getFullYear())*12 +
+        (t.getMonth()-n.getMonth());
+
+      if(mo > 0){
+        m = rem / mo;
+      }
+    }
+
+    return {
+      rem,
+      pct,
+      m,
+      mo
+    };
+  },
+
+  billStatus(b){
+
+    if(b.paid){
+      return "Paid";
+    }
+
+    const due = new Date(b.due);
+    const now = new Date(today());
+
+    const d =
+      (due-now)/86400000;
+
+    if(d < 0){
+      return "Overdue";
+    }
+
+    if(d <= 7){
+      return "Due Soon";
+    }
+
+    return "Upcoming";
+  },
+
+  budget(){
+
+    const p = S.profile;
+    const inc = C.planIncome();
+
+    if(!p || !inc){
+      return null;
+    }
+
+    const ess =
+      C.fixed() +
+      Number(p.grocery||0);
+
+    const emi = C.totalEmi();
+
+    const sv =
+      inc * Number(S.savePct||0) / 100;
+
+    return {
+      inc,
+      ess,
+      emi,
+      sv,
+      wants:inc-ess-emi-sv
+    };
+  },
+
+  budgetUsage(){
+
+    const b = C.budget();
+
+    if(!b){
+      return null;
+    }
+
+    return {
+      ess:
+        b.ess > 0
+          ? C.essential()/b.ess*100
+          : null,
+
+      wants:
+        b.wants > 0
+          ? C.nonEssential()/b.wants*100
+          : null
+    };
+  },
+
+  insights(){
+
+    const e = C.exp();
+    const out = [];
+    const tot = C.totalExpenses();
+
+    if(e.length < 3){
+      return out;
+    }
+
+    const cc =
+      Object.entries(
+        C.categoryExpenses()
+      ).sort(
+        (a,b)=>b[1]-a[1]
+      );
+
+    if(cc.length && tot > 0){
+
+      out.push(
+        L(
+          "top",
+          cc[0][0],
+          fmt(cc[0][1]),
+          Math.round(cc[0][1]/tot*100)
+        )
+      );
+    }
+
+    const [y,m] =
+      C.month().split("-").map(Number);
+
+    const pm =
+      new Date(y,m-2,1)
+      .toISOString()
+      .slice(0,7);
+
+    const prev =
+      C.categoryExpenses(
+        S.tx.filter(
+          x =>
+            x.type === "expense" &&
+            String(x.date).startsWith(pm)
+        )
+      );
+
+    cc.forEach(([k,v])=>{
+
+      if(
+        prev[k] > 0 &&
+        v > prev[k] * 1.2
+      ){
+
+        out.push(
+          L(
+            "rise",
+            k,
+            Math.round(
+              (v/prev[k]-1)*100
+            )
+          )
+        );
+      }
+    });
+
+    const th =
+      e.length > 0
+        ? tot/e.length*.5
+        : 0;
+
+    const sm =
+      e.filter(
+        x => Number(x.amount) < th
+      );
+
+    if(sm.length >= 3){
+
+      out.push(
+        L(
+          "small",
+          sm.length,
+          fmt(th),
+          fmt(sum(sm,x=>x.amount))
+        )
+      );
+    }
+
+    if(tot > 0){
+
+      const ep =
+        Math.round(
+          C.essential()/tot*100
+        );
+
+      out.push(
+        L(
+          "ess",
+          ep,
+          100-ep
+        )
+      );
+    }
+
+    return out;
+  }
+};
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+const F = (
+  label,
+  id,
+  value="",
+  type="number",
+  extra=""
+) => `
+<label>
+  ${label}
+  <input
+    id="${id}"
+    type="${type}"
+    value="${esc(value)}"
+    ${extra}
+  >
+</label>
+`;
+
+const pb = p => `
+<div class="pb">
+  <i style="width:${Math.max(
+    0,
+    Math.min(Number(p)||0,100)
+  )}%"></i>
+</div>
+`;
+
+const cu = v => `
+<b
+  class="cu"
+  data-v="${Number(v)||0}"
+>${fmt(v)}</b>
+`;
+
+const em = message => `
+<div class="empty">${message}</div>
+`;
+
+function num(id,label,required=false,max){
+
+  const value = String(g(id)).trim();
+
+  if(!value){
+
+    if(required){
+      throw Error(label+" is required.");
+    }
+
+    return 0;
+  }
+
+  const v = Number(value);
+
+  if(!isFinite(v) || v < 0){
+    throw Error(
+      label+" must be a positive number."
+    );
+  }
+
+  if(max !== undefined && v > max){
+    throw Error(
+      label+" cannot exceed "+max+"."
+    );
+  }
+
+  return v;
+}
+
+const run = fn => {
+
+  try{
+    fn();
+  }catch(e){
+    toast(e.message || "Something went wrong.",true);
+  }
+};
+
+
+/* =========================================================
+   CHARTS
+   ========================================================= */
+
+const COL = [
+  "#8b6cff",
+  "#22d3ee",
+  "#f472b6",
+  "#fbbf24",
+  "#34d399",
+  "#fb7185",
+  "#60a5fa",
+  "#a3e635"
+];
+
+function donut(data){
+
+  const entries =
+    Object.entries(data)
+      .sort((a,b)=>b[1]-a[1]);
+
+  const total =
+    sum(entries,x=>x[1]);
+
+  if(!total){
+    return em("No data for this chart yet.");
+  }
+
+  let offset = 0;
+
+  const circles =
+    entries.map(([key,value],i)=>{
+
+      const pct =
+        value/total*100;
+
+      const html = `
+<circle
+  cx="21"
+  cy="21"
+  r="15.9"
+  fill="none"
+  stroke="${COL[i%COL.length]}"
+  stroke-width="6"
+  stroke-dasharray="${pct} ${100-pct}"
+  stroke-dashoffset="${25-offset}"
+/>`;
+
+      offset += pct;
+
+      return html;
+
+    }).join("");
+
+  return `
+<div class="chart">
+
+<svg viewBox="0 0 42 42">
+
+<circle
+  cx="21"
+  cy="21"
+  r="15.9"
+  fill="none"
+  stroke="rgba(255,255,255,.06)"
+  stroke-width="6"
+/>
+
+${circles}
+
+</svg>
+
+<div class="leg">
+
+${entries.map(
+  ([key,value],i)=>`
+<div>
+<i style="background:${COL[i%COL.length]}"></i>
+${esc(key)} ${fmt(value)}
+</div>
+`
+).join("")}
+
+</div>
+</div>
+`;
+}
+
+function bars(items){
+
+  const max =
+    Math.max(
+      ...items.flatMap(
+        i => [i.a||0,i.b||0]
+      ),
+      0
+    );
+
+  if(!max){
+    return em(
+      "No data for this chart yet."
+    );
+  }
+
+  return `
+<div class="bars">
+
+${items.map(i=>`
+
+<div>
+
+<div class="bg2">
+
+<div
+  class="bar"
+  title="${fmt(i.a)}"
+  style="
+    height:${i.a/max*100}%;
+    background:var(--g)
+  "
+></div>
+
+<div
+  class="bar"
+  title="${fmt(i.b)}"
+  style="
+    height:${i.b/max*100}%;
+    background:var(--r)
+  "
+></div>
+
+</div>
+
+<div class="bl">${esc(i.l)}</div>
+
+</div>
+
+`).join("")}
+
+</div>
+
+<div class="mu">
+Green income · Red expense
+</div>
+`;
+}
+
+function trend(){
+
+  const months = [
+    ...new Set(
+      S.tx.map(
+        x => String(x.date||"").slice(0,7)
+      )
+    )
+  ]
+  .filter(Boolean)
+  .sort()
+  .slice(-6);
+
+  return bars(
+    months.map(m=>({
+
+      l:m.slice(2),
+
+      a:sum(
+        S.tx.filter(
+          x =>
+            x.type==="income" &&
+            String(x.date).startsWith(m)
+        ),
+        x=>x.amount
+      ),
+
+      b:sum(
+        S.tx.filter(
+          x =>
+            x.type==="expense" &&
+            String(x.date).startsWith(m)
+        ),
+        x=>x.amount
+      )
+
+    }))
+  );
+}
+
+
+/* =========================================================
+   GENERIC CRUD
+   ========================================================= */
+
+const DEF = {
+
+  bills:{
+    t:"Bills",
+    f:[
+      ["name","Bill name","text",true],
+      ["amount","Amount","number",true],
+      ["due","Due date","date",true],
+      ["cat","Category","text",false],
+      ["paid","Paid","checkbox",false]
+    ]
+  },
+
+  debts:{
+    t:"Debt & EMI",
+    f:[
+      ["name","Loan name","text",true],
+      ["orig","Original amount","number",true],
+      ["out","Outstanding amount","number",true],
+      ["emi","EMI per month","number",true],
+      ["due","EMI due day (1-31)","number",false],
+      ["rate","Interest % per year","number",false]
+    ]
+  },
+
+  goals:{
+    t:"Financial Goals",
+    f:[
+      ["name","Goal name","text",true],
+      ["target","Target amount","number",true],
+      ["cur","Current amount","number",false],
+      ["date","Target date","date",false]
+    ]
+  }
+};
+
+const ROW = {
+
+  bills:b => {
+
+    const status =
+      C.billStatus(b);
+
+    const cls =
+      status === "Due Soon"
+        ? "Due"
+        : status;
+
+    return `
+<td>
+  ${esc(b.name)}
+  <div class="mu">
+    ${esc(b.cat||"")}
+  </div>
+</td>
+
+<td>${fmt(b.amount)}</td>
+
+<td>${esc(b.due)}</td>
+
+<td>
+  <span class="pill ${cls}">
+    ${status}
+  </span>
+</td>
+`;
+  },
+
+  debts:d => `
+<td>${esc(d.name)}</td>
+
+<td>
+  ${fmt(d.out)}
+  <span class="mu">
+    of ${fmt(d.orig)}
+  </span>
+
+  ${pb(
+    d.orig
+      ? 100-d.out/d.orig*100
+      : 0
+  )}
+</td>
+
+<td>${fmt(d.emi)}</td>
+
+<td class="mu">
+  ${d.rate ? d.rate+"%" : ""}
+  ${d.due ? " · day "+d.due : ""}
+</td>
+`,
+
+  goals:x => {
+
+    const p =
+      C.goalProgress(x);
+
+    return `
+<td>
+  ${esc(x.name)}
+  ${pb(p.pct)}
+
+  <div class="mu">
+    ${Math.round(p.pct)}% ·
+    ${fmt(x.cur)} of ${fmt(x.target)}
+  </div>
+</td>
+
+<td>${fmt(p.rem)} left</td>
+
+<td>${x.date || "No date"}</td>
+
+<td>
+  ${
+    p.m != null
+      ? fmt(p.m)+"/month"
+      : p.mo != null &&
+        p.mo <= 0 &&
+        p.rem > 0
+        ? '<span class="neg">Date passed</span>'
+        : "—"
+  }
+</td>
+`;
+  }
+};
+
+let editing = {};
+
+
+/* =========================================================
+   CRUD
+   ========================================================= */
+
+function crud(k){
+
+  const d = DEF[k];
+
+  const ed =
+    S[k].find(
+      x => x.id === editing[k]
+    );
+
+  const list = S[k];
+
+  let summary = "";
+
+  if(k==="debts"){
+
+    summary = `
+<div class="grid">
+
+<div class="card">
+<div class="mu">Total debt</div>
+<div class="big">${cu(C.debtTotal())}</div>
+</div>
+
+<div class="card">
+<div class="mu">Total EMI / month</div>
+<div class="big">${cu(C.totalEmi())}</div>
+</div>
+
+</div>
+`;
+  }
+
+  if(k==="bills"){
+
+    const unpaid =
+      list.filter(b=>!b.paid);
+
+    summary = `
+<div class="grid">
+
+<div class="card">
+
+<div class="mu">
+Unpaid bills
+</div>
+
+<div class="big">
+${cu(sum(unpaid,b=>b.amount))}
+</div>
+
+<div class="mu">
+${unpaid.length} pending
+</div>
+
+</div>
+
+</div>
+`;
+  }
+
+  return `
+
+<h1>${d.t}</h1>
+
+<p class="sub">
+Stored once and reused across your budget,
+dashboard and assistant.
+</p>
+
+${summary}
+
+<div class="card">
+
+<h2>
+${ed ? "Edit" : "Add"}
+</h2>
+
+<div class="fg">
+
+${d.f.map(
+  ([key,label,type,required]) => {
+
+    if(type==="checkbox"){
+
+      return `
+<label>
+${label}
+<br>
+<input
+  id="${k}_${key}"
+  type="checkbox"
+  ${ed && ed[key] ? "checked" : ""}
+>
+</label>
+`;
+    }
+
+    return F(
+      label,
+      `${k}_${key}`,
+      ed ? ed[key] ?? "" : "",
+      type,
+      type==="number"
+        ? 'min="0" step="any"'
+        : ""
+    );
+  }
+).join("")}
+
+</div>
+
+<button onclick="saveItem('${k}')">
+${ed ? "Save changes" : "Add"}
+</button>
+
+${
+  ed
+    ? `
+<button
+  class="s"
+  onclick="editing.${k}=null;render()"
+>
+Cancel
+</button>
+`
+    : ""
+}
+
+</div>
+
+<div
+  class="card"
+  style="margin-top:14px"
+>
+
+${
+  list.length
+    ? `
+
+<div class="tw">
+
+<table>
+
+<tbody>
+
+${list.map(x=>`
+
+<tr>
+
+${ROW[k](x)}
+
+<td style="white-space:nowrap">
+
+${
+  k==="bills"
+    ? `
+<button
+  class="s"
+  onclick="togglePaid('${x.id}')"
+>
+${x.paid ? "Unpay" : "Mark paid"}
+</button>
+`
+    : ""
+}
+
+${
+  k==="goals"
+    ? `
+<button
+  class="s"
+  onclick="addToGoal('${x.id}')"
+>
++ Add
+</button>
+`
+    : ""
+}
+
+<button
+  class="s"
+  onclick="editing.${k}='${x.id}';render()"
+>
+Edit
+</button>
+
+<button
+  class="s d"
+  onclick="delItem('${k}','${x.id}')"
+>
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`).join("")}
+
+</tbody>
+
+</table>
+
+</div>
+`
+    : em(
+        k==="goals"
+          ? "Create your first financial goal."
+          : k==="bills"
+            ? "No bills yet. Add one above."
+            : "No debts recorded."
+      )
+}
+
+</div>
+`;
+}
+
+function saveItem(k){
+
+  run(()=>{
+
+    const o = {};
+
+    DEF[k].f.forEach(
+      ([key,label,type,required])=>{
+
+        if(type==="number"){
+
+          o[key] =
+            num(
+              `${k}_${key}`,
+              label,
+              required
+            );
+
+        }else if(type==="checkbox"){
+
+          o[key] =
+            $(`${k}_${key}`).checked;
+
+        }else{
+
+          o[key] =
+            g(`${k}_${key}`).trim();
+
+          if(required && !o[key]){
+            throw Error(
+              label+" is required."
+            );
+          }
+        }
+
+        if(
+          type==="date" &&
+          required &&
+          !o[key]
+        ){
+          throw Error(
+            label+" is required."
+          );
+        }
+
+      }
+    );
+
+    if(
+      k==="goals" &&
+      o.target<=0
+    ){
+      throw Error(
+        "Target amount must be greater than 0."
+      );
+    }
+
+    if(k==="debts"){
+
+      if(o.out>o.orig){
+        throw Error(
+          "Outstanding cannot exceed the original amount."
+        );
+      }
+
+      if(o.rate>100){
+        throw Error(
+          "Interest cannot exceed 100%."
+        );
+      }
+
+      if(
+        o.due &&
+        (o.due<1 || o.due>31)
+      ){
+        throw Error(
+          "Due day must be 1 to 31."
+        );
+      }
+    }
+
+    if(
+      k==="bills" &&
+      o.amount<=0
+    ){
+      throw Error(
+        "Amount must be greater than 0."
+      );
+    }
+
+    const duplicate =
+      S[k].some(
+        x =>
+          x.id !== editing[k] &&
+          String(x.name).toLowerCase() ===
+          String(o.name).toLowerCase() &&
+          (
+            k!=="bills" ||
+            x.due===o.due
+          )
+      );
+
+    if(duplicate){
+      throw Error(
+        "An entry with this name already exists."
+      );
+    }
+
+    if(editing[k]){
+
+      Object.assign(
+        S[k].find(
+          x => x.id===editing[k]
+        ),
+        o
+      );
+
+      editing[k]=null;
+
+    }else{
+
+      S[k].push({
+        id:uid(),
+        ...o
+      });
+
+    }
+
+    save();
+    render();
+
+    toast("Saved.");
+
+  });
+}
+
+function delItem(k,id){
+
+  if(
+    !confirm(
+      "Delete this entry?"
+    )
+  ){
+    return;
+  }
+
+  S[k] =
+    S[k].filter(
+      x => x.id !== id
+    );
+
+  save();
+  render();
+
+  toast("Deleted.");
+}
+
+function togglePaid(id){
+
+  const bill =
+    S.bills.find(
+      x => x.id===id
+    );
+
+  if(!bill){
+    return;
+  }
+
+  bill.paid =
+    !bill.paid;
+
+  save();
+  render();
+}
+
+function addToGoal(id){
+
+  const value =
+    Number(
+      prompt(
+        "Amount to add to this goal:"
+      )
+    );
+
+  if(!(value>0)){
+
+    toast(
+      "Enter a positive amount.",
+      true
+    );
+
+    return;
+  }
+
+  const goal =
+    S.goals.find(
+      x => x.id===id
+    );
+
+  if(!goal){
+    return;
+  }
+
+  goal.cur =
+    Number(goal.cur||0)+value;
+
+  save();
+  render();
+
+  toast("Goal updated.");
+}
+
+
+/* =========================================================
+   VIEWS
+   ========================================================= */
+
+const V = {};
+
+const welcome = () => `
+
+<div class="hero">
+
+<h1>${L("wt")}</h1>
+
+<p>${L("ws")}</p>
+
+<button onclick="go(1)">
+${L("st")}
+</button>
+
+</div>
+`;
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+V.dash = () => {
+
+  if(!S.profile && !S.tx.length){
+    return welcome();
+  }
+
+  const expenses =
+    C.totalExpenses();
+
+  const insights =
+    C.insights();
+
+  return `
+
+<div class="top">
+
+<div>
+
+<h1>
+${D.nav[0][LN[S.lang]]}
+</h1>
+
+<p
+  class="sub"
+  style="margin:0"
+>
+${C.month()}
+</p>
+
+</div>
+
+<label>
+Month
+
+<input
+  type="month"
+  value="${C.month()}"
+  onchange="
+    S.month=this.value;
+    save();
+    render();
+  "
+>
+
+</label>
+
+</div>
+
+<div class="grid">
+
+<div class="card">
+
+<div class="mu">
+Total income
+</div>
+
+<div class="big">
+${cu(C.totalIncome())}
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="mu">
+Total expenses
+</div>
+
+<div class="big">
+${cu(expenses)}
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="mu">
+Remaining balance
+</div>
+
+<div
+  class="big ${C.balance()<0 ? "neg" : "pos"}"
+>
+${cu(C.balance())}
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="mu">
+Total savings
+</div>
+
+<div class="big">
+
+${
+  S.profile
+    ? cu(C.savings())
+    : "—"
+}
+
+</div>
+
+${
+  S.profile
+    ? ""
+    : `
+<div class="mu">
+Complete Financial Setup
+</div>
+`
+}
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<h2>
+Budget overview
+</h2>
+
+${
+[
+  ["Essential expenses",C.essential()],
+  ["Non-essential expenses",C.nonEssential()],
+  ["Debt / EMI",C.totalEmi()],
+  ["Emergency fund contribution",S.ef.monthly],
+  ["Remaining",C.balance()]
+].map(
+  ([label,value])=>`
+
+<div
+  style="
+    display:flex;
+    justify-content:space-between;
+    padding:5px 0
+  "
+>
+
+<span class="mu">
+${label}
+</span>
+
+${cu(value)}
+
+</div>
+
+`
+).join("")
+}
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Category spending
+</h2>
+
+${donut(C.categoryExpenses())}
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Income vs expense
+</h2>
+
+${bars([
+  {
+    l:C.month().slice(2),
+    a:C.totalIncome(),
+    b:expenses
+  }
+])}
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<h2>
+Essential vs non-essential
+</h2>
+
+${donut(
+  expenses
+    ? {
+        Essential:C.essential(),
+        "Non-essential":C.nonEssential()
+      }
+    : {}
+)}
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Monthly trend
+</h2>
+
+${trend()}
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Insights
+</h2>
+
+${
+  insights.length
+    ? insights
+        .slice(0,3)
+        .map(
+          i =>
+            `<p style="margin-bottom:8px">
+              • ${esc(i)}
+            </p>`
+        )
+        .join("")
+    : em(L("noins"))
+}
+
+</div>
+
+</div>
+`;
+};
+
+
+/* =========================================================
+   FINANCIAL SETUP
+   ========================================================= */
+
+V.setup = () => {
+
+  const p =
+    S.profile || {};
+
+  const value =
+    k => p[k] ?? "";
+
+  const n =
+    (id,label) =>
+      F(
+        label,
+        "p_"+id,
+        value(id),
+        "number",
+        'min="0" step="any"'
+      );
+
+  return `
+
+<h1>
+${D.nav[1][LN[S.lang]]}
+</h1>
+
+<p class="sub">
+Enter this once. Every section reads from it.
+</p>
+
+
+<div class="card">
+
+<h2>
+Income
+</h2>
+
+<div class="fg">
+
+${n("income","Monthly income")}
+
+${n("other","Other income (monthly)")}
+
+</div>
+
+
+<h2>
+Family
+</h2>
+
+<div class="fg">
+
+${n("members","Family members")}
+
+${n("children","Children")}
+
+${n("earners","Earning members")}
+
+${n("dependents","Dependents")}
+
+</div>
+
+
+<h2>
+Fixed monthly expenses
+</h2>
+
+<div class="fg">
+
+${n("rent","Rent")}
+
+${n("elec","Electricity")}
+
+${n("net","Internet")}
+
+${n("mobile","Mobile")}
+
+${n("edu","Education")}
+
+${n("ins","Insurance")}
+
+${n("transport","Transportation")}
+
+</div>
+
+
+<h2>
+Lifestyle & savings
+</h2>
+
+<div class="fg">
+
+<label>
+Food habit
+
+<select id="p_food">
+
+${[
+  "mixed",
+  "veg",
+  "non-veg"
+].map(
+  option => `
+<option
+  ${value("food")===option ? "selected" : ""}
+>
+${option}
+</option>
+`
+).join("")}
+
+</select>
+
+</label>
+
+${n(
+  "grocery",
+  "Monthly grocery budget"
+)}
+
+${n(
+  "savings",
+  "Existing savings"
+)}
+
+</div>
+
+
+<p
+  class="mu"
+  style="margin-bottom:12px"
+>
+Loans and EMIs go in Debt & EMI;
+goals in Financial Goals.
+</p>
+
+<button onclick="saveProfile()">
+Save setup
+</button>
+
+</div>
+`;
+};
+
+function saveProfile(){
+
+  run(()=>{
+
+    const o = {};
+
+    [
+      "income",
+      "other",
+      "members",
+      "children",
+      "earners",
+      "dependents",
+      "rent",
+      "elec",
+      "net",
+      "mobile",
+      "edu",
+      "ins",
+      "transport",
+      "grocery",
+      "savings"
+    ].forEach(k=>{
+
+      o[k] =
+        num(
+          "p_"+k,
+          k==="income"
+            ? "Monthly income"
+            : "Value ("+k+")",
+          k==="income"
+        );
+
+    });
+
+    if(o.income<=0){
+      throw Error(
+        "Monthly income must be greater than 0."
+      );
+    }
+
+    if(
+      o.children >
+      o.members
+    ){
+      throw Error(
+        "Children cannot exceed family members."
+      );
+    }
+
+    if(
+      o.earners >
+      o.members
+    ){
+      throw Error(
+        "Earning members cannot exceed family members."
+      );
+    }
+
+    o.food =
+      g("p_food");
+
+    S.profile = o;
+
+    save();
+
+    toast(
+      "Setup saved. Your plan is ready."
+    );
+
+    go(2);
+
+  });
+}
+
+
+/* =========================================================
+   BUDGET
+   ========================================================= */
+
+V.budget = () => {
+
+  const b =
+    C.budget();
+
+  if(!b){
+
+    return `
+<h1>
+${D.nav[2][LN[S.lang]]}
+</h1>
+
+${em(
+  "Add your income to start your financial plan."
+)}
+`;
+  }
+
+  const usage =
+    C.budgetUsage();
+
+  const rows = [
+    [
+      "Essentials (fixed + groceries)",
+      b.ess
+    ],
+    [
+      "Debt / EMI",
+      b.emi
+    ],
+    [
+      "Savings target",
+      b.sv
+    ],
+    [
+      "Discretionary",
+      b.wants
+    ]
+  ];
+
+  const goalMonthly =
+    sum(
+      S.goals,
+      x => C.goalProgress(x).m || 0
+    );
+
+  return `
+
+<h1>
+${D.nav[2][LN[S.lang]]}
+</h1>
+
+<p class="sub">
+A suggested plan from your income,
+family, commitments and savings target.
+</p>
+
+
+<div class="card">
+
+<label>
+
+Savings target:
+<b>${S.savePct}%</b>
+of income (${fmt(b.sv)})
+
+<input
+  type="range"
+  min="0"
+  max="60"
+  value="${S.savePct}"
+  oninput="
+    S.savePct=+this.value;
+    save();
+    render();
+  "
+>
+
+</label>
+
+</div>
+
+
+<div
+  class="grid"
+  style="margin-top:14px"
+>
+
+${rows.map(
+  ([label,value])=>`
+
+<div class="card">
+
+<div class="mu">
+${label}
+</div>
+
+<div
+  class="big ${value<0 ? "neg" : ""}"
+>
+${cu(value)}
+</div>
+
+${pb(
+  b.inc
+    ? value/b.inc*100
+    : 0
+)}
+
+<div class="mu">
+${
+  b.inc
+    ? Math.round(value/b.inc*100)
+    : 0
+}% of income
+</div>
+
+</div>
+
+`
+).join("")}
+
+</div>
+
+
+${
+  b.wants<0
+    ? `
+<div class="card neg">
+Your commitments and savings target exceed
+your income. Lower the savings target or
+review fixed costs.
+</div>
+`
+    : ""
+}
+
+
+<div class="grid">
+
+<div class="card">
+
+<h2>
+Actual usage this month
+</h2>
+
+<div class="mu">
+Essentials vs plan
+</div>
+
+${
+  usage.ess != null
+    ? `
+${pb(usage.ess)}
+${Math.round(usage.ess)}%
+`
+    : "—"
+}
+
+<div
+  class="mu"
+  style="margin-top:10px"
+>
+Discretionary vs plan
+</div>
+
+${
+  usage.wants != null
+    ? `
+${pb(usage.wants)}
+${Math.round(usage.wants)}%
+`
+    : "No discretionary budget"
+}
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Related commitments
+</h2>
+
+<p class="mu">
+Emergency fund contribution:
+${fmt(S.ef.monthly)}/month
+</p>
+
+<p class="mu">
+Goals need:
+${
+  goalMonthly
+    ? fmt(goalMonthly)+"/month"
+    : "no dated goals"
+}
+</p>
+
+<p class="mu">
+Family of
+${S.profile?.members || "—"}
+</p>
+
+</div>
+
+</div>
+`;
+};
+
+
+/* =========================================================
+   TRANSACTIONS
+   ========================================================= */
+
+let flt = {
+  q:"",
+  cat:"",
+  type:"",
+  from:"",
+  to:"",
+  sort:"date-d"
+};
+
+V.tx = () => {
+
+  let list =
+    S.tx.filter(x=>{
+
+      const desc =
+        String(
+          x.desc ??
+          x.description ??
+          ""
+        ).toLowerCase();
+
+      return (
+
+        !flt.q ||
+        desc.includes(
+          flt.q.toLowerCase()
+        )
+
+      ) && (
+
+        !flt.cat ||
+        x.cat===flt.cat
+
+      ) && (
+
+        !flt.type ||
+        x.type===flt.type
+
+      ) && (
+
+        !flt.from ||
+        x.date>=flt.from
+
+      ) && (
+
+        !flt.to ||
+        x.date<=flt.to
+
+      );
+    });
+
+  const [key,direction] =
+    flt.sort.split("-");
+
+  list.sort(
+    (a,b)=>{
+
+      let result;
+
+      if(key==="date"){
+
+        result =
+          String(a.date||"")
+            .localeCompare(
+              String(b.date||"")
+            );
+
+      }else{
+
+        result =
+          Number(a.amount||0) -
+          Number(b.amount||0);
+      }
+
+      return direction==="d"
+        ? -result
+        : result;
+    }
+  );
+
+  const edit =
+    S.tx.find(
+      x => x.id===editing.tx
+    );
+
+  const cats = [
+    ...new Set([
+      ...CATS,
+      ...S.tx.map(
+        x => x.cat
+      ).filter(Boolean)
+    ])
+  ];
+
+  return `
+
+<h1>
+${D.nav[3][LN[S.lang]]}
+</h1>
+
+<p class="sub">
+One transaction is one record.
+Classification comes from the record itself.
+</p>
+
+
+<div class="card">
+
+<h2>
+${edit ? "Edit transaction" : "Add transaction"}
+</h2>
+
+<div class="fg">
+
+${F(
+  "Description",
+  "t_desc",
+  edit?.desc ??
+  edit?.description ??
+  "",
+  "text"
+)}
+
+${F(
+  "Amount",
+  "t_amt",
+  edit?.amount ?? "",
+  "number",
+  'min="0" step="any"'
+)}
+
+
+<label>
+Type
+
+<select id="t_type">
+
+<option
+  value="expense"
+  ${edit?.type==="expense" ? "selected" : ""}
+>
+Expense
+</option>
+
+<option
+  value="income"
+  ${edit?.type==="income" ? "selected" : ""}
+>
+Income
+</option>
+
+</select>
+
+</label>
+
+
+<label>
+
+Category
+
+<input
+  id="t_cat"
+  list="cl"
+  value="${esc(edit?.cat||"")}"
+  oninput="
+    $('t_ess').checked=
+      ESS.has(this.value)
+  "
+>
+
+<datalist id="cl">
+
+${cats.map(
+  c => `<option>${esc(c)}</option>`
+).join("")}
+
+</datalist>
+
+</label>
+
+
+${F(
+  "Date",
+  "t_date",
+  edit?.date || today(),
+  "date"
+)}
+
+
+<label>
+
+Essential
+<br>
+
+<input
+  id="t_ess"
+  type="checkbox"
+  ${
+    edit?.ess
+      ? "checked"
+      : ""
+  }
+>
+
+</label>
+
+</div>
+
+
+<button onclick="saveTx()">
+${edit
+  ? "Save changes"
+  : "Add transaction"}
+</button>
+
+
+${
+  edit
+    ? `
+<button
+  class="s"
+  onclick="
+    editing.tx=null;
+    render();
+  "
+>
+Cancel
+</button>
+`
+    : ""
+}
+
+</div>
+
+
+<div
+  class="card"
+  style="margin-top:14px"
+>
+
+<div class="fg">
+
+<label>
+Search
+
+<input
+  value="${esc(flt.q)}"
+  oninput="
+    flt.q=this.value;
+    filterTransactionTable();
+  "
+>
+
+</label>
+
+
+<label>
+Category
+
+<select
+  onchange="
+    flt.cat=this.value;
+    render();
+  "
+>
+
+<option value="">
+All
+</option>
+
+${cats.map(
+  c => `
+<option
+  value="${esc(c)}"
+  ${flt.cat===c ? "selected" : ""}
+>
+${esc(c)}
+</option>
+`
+).join("")}
+
+</select>
+
+</label>
+
+
+<label>
+Type
+
+<select
+  onchange="
+    flt.type=this.value;
+    render();
+  "
+>
+
+<option value="">
+All
+</option>
+
+<option
+  value="income"
+  ${flt.type==="income" ? "selected" : ""}
+>
+income
+</option>
+
+<option
+  value="expense"
+  ${flt.type==="expense" ? "selected" : ""}
+>
+expense
+</option>
+
+</select>
+
+</label>
+
+
+${F(
+  "From",
+  "f_from",
+  flt.from,
+  "date",
+  'onchange="flt.from=this.value;render()"'
+)}
+
+${F(
+  "To",
+  "f_to",
+  flt.to,
+  "date",
+  'onchange="flt.to=this.value;render()"'
+)}
+
+
+<label>
+Sort
+
+<select
+  onchange="
+    flt.sort=this.value;
+    render();
+  "
+>
+
+<option
+  value="date-d"
+  ${flt.sort==="date-d" ? "selected" : ""}
+>
+Newest
+</option>
+
+<option
+  value="date-a"
+  ${flt.sort==="date-a" ? "selected" : ""}
+>
+Oldest
+</option>
+
+<option
+  value="amount-d"
+  ${flt.sort==="amount-d" ? "selected" : ""}
+>
+Highest
+</option>
+
+<option
+  value="amount-a"
+  ${flt.sort==="amount-a" ? "selected" : ""}
+>
+Lowest
+</option>
+
+</select>
+
+</label>
+
+</div>
+
+
+<div id="txl">
+${txTable(list)}
+</div>
+
+</div>
+`;
+};
+
+function txTable(list){
+
+  if(!list.length){
+
+    return em(
+      S.tx.length
+        ? "No transactions match your filters."
+        : "No transactions yet."
+    );
+  }
+
+  return `
+
+<div class="tw">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+<th>Description</th>
+<th>Category</th>
+<th>Amount</th>
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${list.map(x=>{
+
+  const description =
+    x.desc ??
+    x.description ??
+    "";
+
+  return `
+
+<tr>
+
+<td>
+${esc(x.date)}
+</td>
+
+<td>
+${esc(description)}
+</td>
+
+<td>
+
+${esc(x.cat || "")}
+
+${
+  x.type==="expense"
+    ? `
+<span class="mu">
+${x.ess
+  ? "essential"
+  : "non-essential"}
+</span>
+`
+    : ""
+}
+
+</td>
+
+<td
+  class="${
+    x.type==="income"
+      ? "pos"
+      : "neg"
+  }"
+>
+
+${
+  x.type==="income"
+    ? "+"
+    : "-"
+}
+
+${fmt(x.amount)}
+
+</td>
+
+<td
+  style="white-space:nowrap"
+>
+
+<button
+  class="s"
+  onclick="
+    editing.tx='${x.id}';
+    render();
+    scrollTo(0,0);
+  "
+>
+Edit
+</button>
+
+<button
+  class="s d"
+  onclick="delTx('${x.id}')"
+>
+Delete
+</button>
+
+</td>
+
+</tr>
+`;
+
+}).join("")}
+
+</tbody>
+
+</table>
+
+</div>
+`;
+}
+
+
+/* =========================================================
+   TRANSACTION BACKEND
+   ========================================================= */
+
+function normalizeTransaction(row){
+
+  return {
+    id:row.id,
+
+    desc:
+      row.desc ??
+      row.description ??
+      "",
+
+    description:
+      row.description ??
+      row.desc ??
+      "",
+
+    amount:Number(row.amount||0),
+
+    type:
+      row.type || "expense",
+
+    cat:
+      row.cat ??
+      row.category ??
+      "Other",
+
+    date:
+      row.date ||
+      today(),
+
+    ess:
+      Boolean(
+        row.ess ??
+        row.essential ??
+        ESS.has(
+          row.cat ??
+          row.category
+        )
+      )
+  };
+}
+
+async function saveTx(){
+
+  try{
+
+    const desc =
+      g("t_desc").trim();
+
+    const cat =
+      g("t_cat").trim();
+
+    const date =
+      g("t_date");
+
+    const type =
+      g("t_type");
+
+    const amount =
+      num(
+        "t_amt",
+        "Amount",
+        true
+      );
+
+    if(!desc){
+      throw Error(
+        "Description is required."
+      );
+    }
+
+    if(!cat){
+      throw Error(
+        "Category is required."
+      );
+    }
+
+    if(amount<=0){
+      throw Error(
+        "Amount must be greater than 0."
+      );
+    }
+
+    if(
+      !date ||
+      isNaN(
+        new Date(date)
+      )
+    ){
+      throw Error(
+        "Enter a valid date."
+      );
+    }
+
+    const transaction = {
+
+      description:desc,
+
+      amount,
+
+      type,
+
+      category:cat,
+
+      cat,
+
+      date,
+
+      essential:
+        type==="expense" &&
+        $("t_ess").checked,
+
+      ess:
+        type==="expense" &&
+        $("t_ess").checked
+    };
+
+    const isEditing =
+      Boolean(editing.tx);
+
+    let url =
+      API + "/transactions";
+
+    let method = "POST";
+
+    if(isEditing){
+
+      url =
+        API +
+        "/transactions/" +
+        encodeURIComponent(
+          editing.tx
+        );
+
+      method = "PUT";
+    }
+
+    const response =
+      await fetch(
+        url,
+        {
+          method,
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(
+              transaction
+            )
+        }
+      );
+
+    const text =
+      await response.text();
+
+    let data = {};
+
+    try{
+      data =
+        text
+          ? JSON.parse(text)
+          : {};
+    }catch(e){
+      data = {
+        message:text
+      };
+    }
+
+    if(!response.ok){
+
+      throw Error(
+        data.error ||
+        data.message ||
+        `Backend error (${response.status})`
+      );
+    }
+
+    editing.tx = null;
+
+    await loadTransactions(false);
+
+    S.month =
+      date.slice(0,7);
+
+    save();
+
+    render();
+
+    toast(
+      isEditing
+        ? "Transaction updated."
+        : "Transaction saved to database."
+    );
+
+  }catch(error){
+
+    console.error(
+      "saveTx error:",
+      error
+    );
+
+    toast(
+      "Could not save transaction: " +
+      error.message,
+      true
+    );
+  }
+}
+
+async function loadTransactions(showToast=true){
+
+  try{
+
+    const response =
+      await fetch(
+        API + "/transactions",
+        {
+          method:"GET",
+          headers:{
+            "Accept":
+              "application/json"
+          }
+        }
+      );
+
+    if(!response.ok){
+
+      throw Error(
+        "Backend returned " +
+        response.status
+      );
+    }
+
+    const data =
+      await response.json();
+
+    if(!Array.isArray(data)){
+
+      throw Error(
+        "Invalid transaction data from backend."
+      );
+    }
+
+    S.tx =
+      data.map(
+        normalizeTransaction
+      );
+
+    backendOnline = true;
+
+    updateBackendStatus();
+
+    save();
+
+    console.log(
+      "Transactions loaded from backend:",
+      S.tx
+    );
+
+    return true;
+
+  }catch(error){
+
+    backendOnline = false;
+
+    updateBackendStatus();
+
+    console.error(
+      "Backend connection error:",
+      error
+    );
+
+    if(showToast){
+
+      toast(
+        "Backend unavailable. Using local data.",
+        true
+      );
+    }
+
+    return false;
+  }
+}
+
+async function delTx(id){
+
+  if(
+    !confirm(
+      "Delete this transaction?"
+    )
+  ){
+    return;
+  }
+
+  try{
+
+    const response =
+      await fetch(
+        API +
+        "/transactions/" +
+        encodeURIComponent(id),
+        {
+          method:"DELETE"
+        }
+      );
+
+    const text =
+      await response.text();
+
+    let data = {};
+
+    try{
+      data =
+        text
+          ? JSON.parse(text)
+          : {};
+    }catch(e){
+      data = {};
+    }
+
+    if(!response.ok){
+
+      throw Error(
+        data.error ||
+        data.message ||
+        "Delete failed"
+      );
+    }
+
+    await loadTransactions(false);
+
+    render();
+
+    toast(
+      "Transaction deleted."
+    );
+
+  }catch(error){
+
+    console.error(
+      "Delete error:",
+      error
+    );
+
+    toast(
+      "Could not delete transaction: " +
+      error.message,
+      true
+    );
+  }
+}
+
+
+/* =========================================================
+   TRANSACTION SEARCH
+   ========================================================= */
+
+function filterTransactionTable(){
+
+  const list =
+    S.tx.filter(x=>{
+
+      const desc =
+        String(
+          x.desc ??
+          x.description ??
+          ""
+        ).toLowerCase();
+
+      return (
+
+        !flt.q ||
+        desc.includes(
+          flt.q.toLowerCase()
+        )
+
+      ) && (
+
+        !flt.cat ||
+        x.cat===flt.cat
+
+      ) && (
+
+        !flt.type ||
+        x.type===flt.type
+
+      ) && (
+
+        !flt.from ||
+        x.date>=flt.from
+
+      ) && (
+
+        !flt.to ||
+        x.date<=flt.to
+
+      );
+
+    });
+
+  const [key,direction] =
+    flt.sort.split("-");
+
+  list.sort(
+    (a,b)=>{
+
+      let r;
+
+      if(key==="date"){
+
+        r =
+          String(a.date||"")
+            .localeCompare(
+              String(b.date||"")
+            );
+
+      }else{
+
+        r =
+          Number(a.amount||0) -
+          Number(b.amount||0);
+      }
+
+      return direction==="d"
+        ? -r
+        : r;
+    }
+  );
+
+  const box =
+    $("txl");
+
+  if(box){
+    box.innerHTML =
+      txTable(list);
+  }
+}
+
+
+/* =========================================================
+   GROCERY PLANNER
+   ========================================================= */
+
+V.grocery = () => {
+
+  const p =
+    S.profile;
+
+  const heading = `
+<h1>
+${D.nav[4][LN[S.lang]]}
+</h1>
+`;
+
+  if(
+    !p ||
+    !p.grocery
+  ){
+
+    return heading +
+      em(
+        "Set your grocery budget to generate a grocery plan."
+      );
+  }
+
+  const splits = {
+
+    veg:{
+      "Grains & pulses":.32,
+      "Vegetables":.25,
+      "Fruits":.13,
+      "Dairy":.18,
+      "Oil & spices":.12
+    },
+
+    "non-veg":{
+      "Grains & pulses":.22,
+      "Vegetables":.16,
+      "Fruits":.08,
+      "Dairy":.10,
+      "Meat, fish & eggs":.32,
+      "Oil & spices":.12
+    },
+
+    mixed:{
+      "Grains & pulses":.26,
+      "Vegetables":.20,
+      "Fruits":.10,
+      "Dairy":.14,
+      "Meat, fish & eggs":.18,
+      "Oil & spices":.12
+    }
+
+  };
+
+  const W =
+    splits[p.food] ||
+    splits.mixed;
+
+  const members =
+    Math.max(
+      Number(p.members||1),
+      1
+    );
+
+  const spent =
+    sum(
+      C.exp().filter(
+        x => x.cat==="Groceries"
+      ),
+      x => x.amount
+    );
+
+  return heading + `
+
+<p class="sub">
+Based on your budget,
+${members} member(s) and
+${esc(p.food || "mixed")} food habit.
+Change them in Financial Setup.
+</p>
+
+
+<div class="grid">
+
+<div class="card">
+
+<div class="mu">
+Budget
+</div>
+
+<div class="big">
+${cu(p.grocery)}
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="mu">
+Per person / day
+</div>
+
+<div class="big">
+${cu(
+  p.grocery/
+  members/
+  30
+)}
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="mu">
+Spent on Groceries this month
+</div>
+
+<div class="big">
+${cu(spent)}
+</div>
+
+${pb(
+  p.grocery
+    ? spent/p.grocery*100
+    : 0
+)}
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Suggested split
+</h2>
+
+${
+  Object.entries(W)
+    .map(
+      ([key,weight])=>`
+
+<div
+  style="
+    display:flex;
+    justify-content:space-between
+  "
+>
+
+<span>
+${key}
+</span>
+
+<b>
+${fmt(
+  p.grocery*weight
+)}
+</b>
+
+</div>
+
+${pb(weight*100)}
+
+`
+    )
+    .join("")
+}
+
+<p class="mu">
+The split is a recommendation and changes
+with your food habit.
+</p>
+
+</div>
+`;
+};
+
+
+/* =========================================================
+   SAVINGS
+   ========================================================= */
+
+V.savings = () => {
+
+  const income =
+    C.totalIncome();
+
+  const expenses =
+    C.totalExpenses();
+
+  const heading = `
+<h1>
+${D.nav[6][LN[S.lang]]}
+</h1>
+`;
+
+  if(!income && !expenses){
+
+    return heading +
+      em(
+        L("need")
+      );
+  }
+
+  const b =
+    C.budget();
+
+  return heading + `
+
+<div class="grid">
+
+<div class="card">
+
+<div class="mu">
+Available this month
+(income − expenses)
+</div>
+
+<div
+  class="big ${
+    C.balance()<0
+      ? "neg"
+      : "pos"
+  }"
+>
+${cu(C.balance())}
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="mu">
+Savings rate
+</div>
+
+<div class="big">
+
+${
+  income
+    ? Math.round(
+        C.balance()/income*100
+      )+"%"
+    : "—"
+}
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="mu">
+Existing savings
+</div>
+
+<div class="big">
+
+${
+  S.profile
+    ? cu(C.savings())
+    : "—"
+}
+
+</div>
+
+</div>
+
+
+${
+  b
+    ? `
+
+<div class="card">
+
+<div class="mu">
+Target from budget
+</div>
+
+<div class="big">
+${cu(b.sv)}
+</div>
+
+${pb(
+  b.sv
+    ? C.savingsPotential()/
+      b.sv*100
+    : 0
+)}
+
+</div>
+
+`
+    : ""
+}
+
+</div>
+`;
+};
+
+
+/* =========================================================
+   EMERGENCY FUND
+   ========================================================= */
+
+V.ef = () => {
+
+  const progress =
+    C.efProgress();
+
+  return `
+
+<h1>
+${D.nav[7][LN[S.lang]]}
+</h1>
+
+
+<div class="card">
+
+<div class="fg">
+
+${F(
+  "Target amount",
+  "e_t",
+  S.ef.target || "",
+  "number",
+  'min="0" step="any"'
+)}
+
+${F(
+  "Current emergency savings",
+  "e_c",
+  S.ef.current || "",
+  "number",
+  'min="0" step="any"'
+)}
+
+${F(
+  "Monthly contribution",
+  "e_m",
+  S.ef.monthly || "",
+  "number",
+  'min="0" step="any"'
+)}
+
+</div>
+
+<button onclick="saveEf()">
+Save
+</button>
+
+</div>
+
+
+<div
+  class="card"
+  style="margin-top:14px"
+>
+
+${
+  progress===null
+    ? em(
+        "Set a target to see your progress."
+      )
+    : `
+
+<div class="big">
+${Math.round(progress)}%
+</div>
+
+${pb(progress)}
+
+<p class="mu">
+
+${fmt(
+  Math.max(
+    S.ef.target -
+    S.ef.current,
+    0
+  )
+)}
+to go
+
+${
+  S.ef.monthly>0 &&
+  S.ef.current<S.ef.target
+    ? `
+· about
+${Math.ceil(
+  (S.ef.target-S.ef.current)/
+  S.ef.monthly
+)}
+months at
+${fmt(S.ef.monthly)}/month
+`
+    : ""
+}
+
+</p>
+
+`
+}
+
+</div>
+`;
+};
+
+function saveEf(){
+
+  run(()=>{
+
+    S.ef = {
+
+      target:
+        num(
+          "e_t",
+          "Target"
+        ),
+
+      current:
+        num(
+          "e_c",
+          "Current savings"
+        ),
+
+      monthly:
+        num(
+          "e_m",
+          "Monthly contribution"
+        )
+    };
+
+    save();
+    render();
+
+    toast("Saved.");
+
+  });
+}
+
+
+/* =========================================================
+   INSIGHTS
+   ========================================================= */
+
+V.insights = () => {
+
+  const insights =
+    C.insights();
+
+  return `
+
+<h1>
+${D.nav[10][LN[S.lang]]}
+</h1>
+
+
+<div class="card">
+
+${
+  insights.length
+    ? insights
+        .map(
+          x => `
+<p
+  style="margin-bottom:10px"
+>
+• ${esc(x)}
+</p>
+`
+        )
+        .join("")
+    : em(
+        L("noins")
+      )
+}
+
+</div>
+
+
+<div
+  class="grid"
+  style="margin-top:14px"
+>
+
+<div class="card">
+
+<h2>
+Category spending
+</h2>
+
+${donut(
+  C.categoryExpenses()
+)}
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Monthly trend
+</h2>
+
+${trend()}
+
+</div>
+
+</div>
+`;
+};
+
+
+/* =========================================================
+   AI ASSISTANT
+   ========================================================= */
+
+V.ai = () => `
+
+<h1>
+${D.nav[11][LN[S.lang]]}
+</h1>
+
+<p class="sub">
+Answers come from your own WALLETIX data.
+</p>
+
+
+<div class="card">
+
+<div id="chat">
+
+<div class="m a">
+${L("a6")}
+</div>
+
+</div>
+
+
+<div class="row">
+
+<input
+  id="q"
+  placeholder="How can I save more?"
+  onkeydown="
+    if(event.key==='Enter') ask()
+  "
+>
+
+<button onclick="ask()">
+Send
+</button>
+
+</div>
+
+</div>
+`;
+
+
+/* =========================================================
+   AI REPLY ENGINE
+   ========================================================= */
+
+function reply(question){
+
+  const q =
+    question.toLowerCase();
+
+  const income =
+    C.totalIncome();
+
+  const expenses =
+    C.totalExpenses();
+
+  const categories =
+    Object.entries(
+      C.categoryExpenses()
+    ).sort(
+      (a,b)=>b[1]-a[1]
+    );
+
+  const output = [];
+
+  const has =
+    words =>
+      words.some(
+        word => q.includes(word)
+      );
+
+
+  if(
+    has([
+      "save",
+      "saving",
+      "savings",
+      "semi",
+      "sema",
+      "சேமி",
+      "more"
+    ])
+  ){
+
+    if(!income && !expenses){
+
+      return L(
+        "a7",
+        "income, expenses"
+      );
+    }
+
+    output.push(
+      L(
+        "a1",
+        fmt(income),
+        fmt(expenses),
+        fmt(C.balance())
+      )
+    );
+
+    if(categories.length){
+
+      output.push(
+        L(
+          "a2",
+          categories[0][0],
+          fmt(
+            categories[0][1]*.1
+          )
+        )
+      );
+    }
+
+    const budget =
+      C.budget();
+
+    if(budget){
+
+      output.push(
+        "Target: " +
+        fmt(budget.sv) +
+        "/month."
+      );
+    }
+
+  }
+
+  else if(
+    has([
+      "spend",
+      "selavu",
+      "expense",
+      "செலவு",
+      "where"
+    ])
+  ){
+
+    if(!expenses){
+
+      return L(
+        "a7",
+        "expenses"
+      );
+    }
+
+    output.push(
+      L(
+        "a1",
+        fmt(income),
+        fmt(expenses),
+        fmt(C.balance())
+      )
+    );
+
+    output.push(
+      ...C.insights()
+    );
+
+  }
+
+  else if(
+    has([
+      "debt",
+      "emi",
+      "loan",
+      "kadan",
+      "கடன்"
+    ])
+  ){
+
+    if(!S.debts.length){
+
+      return L(
+        "a7",
+        "loans in Debt & EMI"
+      );
+    }
+
+    const planIncome =
+      C.planIncome() ||
+      income;
+
+    output.push(
+      L(
+        "a3",
+        fmt(C.debtTotal()),
+        fmt(C.totalEmi()),
+        planIncome
+          ? Math.round(
+              C.totalEmi()/
+              planIncome*100
+            )
+          : "—"
+      )
+    );
+
+  }
+
+  else if(
+    has([
+      "goal",
+      "target",
+      "ilakku",
+      "இலக்கு"
+    ])
+  ){
+
+    if(!S.goals.length){
+
+      return L(
+        "a7",
+        "a goal"
+      );
+    }
+
+    S.goals.forEach(goal=>{
+
+      const p =
+        C.goalProgress(goal);
+
+      if(p.m !== null){
+
+        output.push(
+          L(
+            "a4",
+            goal.name,
+            fmt(p.m),
+            goal.date
+          )
+        );
+
+      }else{
+
+        output.push(
+          goal.name +
+          ": " +
+          Math.round(p.pct) +
+          "% (" +
+          fmt(p.rem) +
+          " left)."
+        );
+      }
+    });
+
+  }
+
+  else if(
+    has([
+      "bill",
+      "due",
+      "கட்டண"
+    ])
+  ){
+
+    const unpaid =
+      S.bills.filter(
+        b => !b.paid
+      );
+
+    if(!S.bills.length){
+
+      return L(
+        "a7",
+        "bills"
+      );
+    }
+
+    output.push(
+      L(
+        "a5",
+        unpaid.length
+          ? unpaid
+              .map(b=>b.name)
+              .join(", ")
+          : "none",
+        fmt(
+          sum(
+            unpaid,
+            b=>b.amount
+          )
+        )
+      )
+    );
+
+  }
+
+  else if(
+    has([
+      "budget",
+      "plan"
+    ])
+  ){
+
+    const budget =
+      C.budget();
+
+    if(!budget){
+
+      return L(
+        "a7",
+        "monthly income in Financial Setup"
+      );
+    }
+
+    output.push(
+      `${fmt(budget.inc)} → ` +
+      `essentials ${fmt(budget.ess)}, ` +
+      `EMI ${fmt(budget.emi)}, ` +
+      `savings ${fmt(budget.sv)}, ` +
+      `discretionary ${fmt(budget.wants)}.`
+    );
+
+  }
+
+  else{
+
+    return L("a6");
+  }
+
+  return output.join("\n");
+}
+
+function ask(){
+
+  const question =
+    g("q").trim();
+
+  if(!question){
+    return;
+  }
+
+  const chat =
+    $("chat");
+
+  chat.insertAdjacentHTML(
+    "beforeend",
+    `
+<div class="m u">
+${esc(question)}
+</div>
+`
+  );
+
+  $("q").value = "";
+
+  const message =
+    document.createElement("div");
+
+  message.className = "m a";
+
+  chat.appendChild(message);
+
+  const answer =
+    reply(question);
+
+  let index = 0;
+
+  const timer =
+    setInterval(()=>{
+
+      message.textContent =
+        answer.slice(
+          0,
+          index += 3
+        );
+
+      chat.scrollTop =
+        chat.scrollHeight;
+
+      if(index >= answer.length){
+        clearInterval(timer);
+      }
+
+    },14);
+}
+
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+
+V.settings = () => `
+
+<h1>
+${D.nav[12][LN[S.lang]]}
+</h1>
+
+
+<div class="card">
+
+<div class="fg">
+
+<label>
+Language
+
+<select
+  onchange="
+    S.lang=this.value;
+    save();
+    render();
+  "
+>
+
+<option
+  value="en"
+  ${S.lang==="en" ? "selected" : ""}
+>
+English
+</option>
+
+<option
+  value="ta"
+  ${S.lang==="ta" ? "selected" : ""}
+>
+தமிழ் (Tamil)
+</option>
+
+<option
+  value="tg"
+  ${S.lang==="tg" ? "selected" : ""}
+>
+Tanglish
+</option>
+
+</select>
+
+</label>
+
+</div>
+
+
+<button onclick="exportData()">
+Export backup
+</button>
+
+
+<label
+  style="
+    display:inline-block;
+    margin-left:8px
+  "
+>
+Import backup
+
+<input
+  type="file"
+  accept=".json"
+  onchange="importData(this)"
+>
+
+</label>
+
+
+<button
+  class="d"
+  onclick="resetAll()"
+>
+Erase all data
+</button>
+
+</div>
+
+
+<div
+  class="card"
+  style="margin-top:14px"
+>
+
+<h2>
+Backend connection
+</h2>
+
+<div class="backend-status">
+
+<span
+  id="settingsStatusDot"
+  class="status-dot"
+></span>
+
+<span id="settingsStatusText">
+Checking backend...
+</span>
+
+</div>
+
+<p
+  class="mu"
+  style="margin-top:10px"
+>
+Backend:
+${API}
+</p>
+
+<button
+  class="s"
+  style="margin-top:10px"
+  onclick="loadTransactions();"
+>
+Test connection
+</button>
+
+</div>
+`;
+
+
+/* =========================================================
+   BACKUP
+   ========================================================= */
+
+function exportData(){
+
+  const file =
+    new Blob(
+      [
+        JSON.stringify(
+          S,
+          null,
+          2
+        )
+      ],
+      {
+        type:
+          "application/json"
+      }
+    );
+
+  const url =
+    URL.createObjectURL(file);
+
+  const a =
+    document.createElement("a");
+
+  a.href = url;
+
+  a.download =
+    "walletix-backup.json";
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  a.remove();
+
+  URL.revokeObjectURL(url);
+}
+
+function importData(input){
+
+  const file =
+    input.files[0];
+
+  if(!file){
+    return;
+  }
+
+  const reader =
+    new FileReader();
+
+  reader.onload = () => {
+
+    run(()=>{
+
+      let data;
+
+      try{
+
+        data =
+          JSON.parse(
+            reader.result
+          );
+
+      }catch(e){
+
+        throw Error(
+          "That file is not a valid backup."
+        );
+      }
+
+      if(
+        !Array.isArray(
+          data.tx
+        )
+      ){
+
+        throw Error(
+          "That file is not a WALLETIX backup."
+        );
+      }
+
+      S =
+        Object.assign(
+          S,
+          data
+        );
+
+      save();
+
+      render();
+
+      toast(
+        "Backup imported."
+      );
+    });
+  };
+
+  reader.readAsText(file);
+}
+
+function resetAll(){
+
+  if(
+    !confirm(
+      "Erase all WALLETIX data? This cannot be undone."
+    )
+  ){
+    return;
+  }
+
+  try{
+    localStorage.removeItem(KEY);
+  }catch(e){}
+
+  location.reload();
+}
+
+
+/* =========================================================
+   BACKEND STATUS
+   ========================================================= */
+
+function updateBackendStatus(){
+
+  const dot =
+    $("settingsStatusDot");
+
+  const text =
+    $("settingsStatusText");
+
+  if(!dot || !text){
+    return;
+  }
+
+  if(backendOnline){
+
+    dot.className =
+      "status-dot ok";
+
+    text.textContent =
+      "Backend connected";
+
+  }else{
+
+    dot.className =
+      "status-dot error";
+
+    text.textContent =
+      "Backend unavailable";
+  }
+}
+
+
+/* =========================================================
+   APP SHELL
+   ========================================================= */
+
+const ORDER = [
+  "dash",
+  "setup",
+  "budget",
+  "tx",
+  "grocery",
+  "bills",
+  "savings",
+  "ef",
+  "debts",
+  "goals",
+  "insights",
+  "ai",
+  "settings"
+];
+
+let cur = 0;
+
+V.bills =
+  () => crud("bills");
+
+V.debts =
+  () => crud("debts");
+
+V.goals =
+  () => crud("goals");
+
+function go(index){
+
+  cur = index;
+
+  render();
+
+  $("nav")
+    .classList
+    .remove("open");
+
+  scrollTo(0,0);
+}
+
+function render(){
+
+  $("nav").innerHTML = `
+
+<div class="logo">
+WALLETIX
+</div>
+
+${D.nav.map(
+  (item,index)=>`
+
+<a
+  class="${index===cur ? "on" : ""}"
+  onclick="go(${index})"
+>
+${item[LN[S.lang]]}
+</a>
+
+`
+).join("")}
+
+`;
+
+  $("main").innerHTML = `
+
+<button
+  id="menu"
+  class="s"
+  style="margin-bottom:12px"
+  onclick="
+    $('nav').classList.toggle('open')
+  "
+>
+☰ Menu
+</button>
+
+<div
+  class="backend-status"
+  style="margin-bottom:14px"
+>
+
+<span
+  class="status-dot ${
+    backendOnline
+      ? "ok"
+      : "error"
+  }"
+></span>
+
+${
+  backendOnline
+    ? "Backend connected"
+    : "Local mode"
+}
+
+</div>
+
+${
+  typeof V[ORDER[cur]] === "function"
+    ? V[ORDER[cur]]()
+    : em("Page not found.")
+}
+
+`;
+
+  updateBackendStatus();
+
+  document
+    .querySelectorAll(".cu")
+    .forEach(element=>{
+
+      const value =
+        Number(
+          element.dataset.v
+        ) || 0;
+
+      const start =
+        performance.now();
+
+      function animate(time){
+
+        const progress =
+          Math.min(
+            (time-start)/700,
+            1
+          );
+
+        const eased =
+          1 -
+          Math.pow(
+            1-progress,
+            3
+          );
+
+        element.textContent =
+          fmt(
+            value*eased
+          );
+
+        if(progress<1){
+          requestAnimationFrame(
+            animate
+          );
+        }
+      }
+
+      requestAnimationFrame(
+        animate
+      );
+    });
+}
+
+
+/* =========================================================
+   GLOBAL ERROR HANDLER
+   ========================================================= */
+
+window.addEventListener(
+  "error",
+  event => {
+
+    console.error(
+      "WALLETIX error:",
+      event.error || event.message
+    );
+
+    toast(
+      "Something went wrong: " +
+      event.message,
+      true
+    );
+  }
+);
+
+
+/* =========================================================
+   START WALLETIX
+   ========================================================= */
+
+(async function(){
+
+  /*
+    First render immediately so the UI
+    appears even if backend is offline.
+  */
+
+  render();
+
+  /*
+    Then try to load transactions
+    from SQLite backend.
+  */
+
+  await loadTransactions(false);
+
+  /*
+    Render again with backend data.
+  */
+
+  render();
+
+})();
+
+</script>
+
+</body>
+</html>
